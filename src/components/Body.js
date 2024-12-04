@@ -1,45 +1,43 @@
 import React from 'react';
 import ProductCard from './ProductCard';
+import { ProductItems } from '../utils/mockData';
+// import Card from './Card';
 const Body = () => {
+  let Item=ProductItems;
+  function handleTopRatedProducts() {
+    Item = ProductItems.filter((product) => product.rating.rate > 4);
+    console.log(Item);
+  }
+ 
   return (
     <section className='flex flex-col gap-4 px-2 py-2 '>
       <div className='flex gap-3'>
         <input
           type='text'
-          class='w-80 px-4 py-2 pr-10 text-sm text-gray-700 bg-white border border-gray-800 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400'
+          className='w-80 px-4 py-2 pr-10 text-sm text-gray-700 bg-white border border-gray-800 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400'
           placeholder='Search...'
         />
         Search
       </div>
+      <button className='px-4 py-2 font-semibold text-white transition-colors duration-200 bg-blue-600 rounded-lg shadow-md w-60 hover:bg-blue-700 hover:shadow-lg' onClick={handleTopRatedProducts}>
+        Top Rated Products
+      </button>
       <div className='flex flex-wrap justify-center gap-4 product-items'>
-        <ProductCard 
-            title= 'Clothing Bags'
-            description = ' Your perfect pack for everyday use and walks in the forest. Stash your
-        laptop (up to 15 inches) in the padded sleeve, your everyday'
-            price = '$109.95'
-            image = 'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg'
-        />
+{
+  Item.map((product)=>
+    <ProductCard productItems={product} key={product.id}/>
+  )
+}
 
-        <ProductCard
-            title = 'Mens Casual Premium Slim Fit T-Shirts'
-            description = 'Slim-fitting style, contrast raglan long sleeve, three-button henley placket, light weight & soft fabric for breathable and comfortable wearing. And Solid stitched shirts with round neck made for durability and a great fit for casual fashion wear and diehard baseball fans. The Henley style round neckline includes a three-button placket.'
-            price = '22.3'
-            image = "https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg"
+        {/* <ProductCard ProductItems={ProductItems[1]}
             />
-        {/* <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard /> */}
-      </div>
+
+        <ProductCard ProductItems={ProductItems[2]}
+            /> */}
+
+
+        
+        </div>
     </section>
   );
 };

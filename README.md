@@ -6,4 +6,5 @@
 
 git status
 git add.
-git commit -m
+git commit -m "your commit msg"
+git push -u main
