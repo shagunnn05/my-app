@@ -8,3 +8,6 @@ git status
 git add.
 git commit -m "your commit msg"
 git push -u main
+
+
+-Hook:Normal js function given from react

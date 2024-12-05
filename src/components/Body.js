@@ -1,12 +1,19 @@
-import React from 'react';
+import React , { useState} from 'react';
 import ProductCard from './ProductCard';
-import { ProductItems } from '../utils/mockData';
+import { PRODUCT_ITEMS } from '../utils/mockData';
+import Categories from './Categories';
 // import Card from './Card';
+
 const Body = () => {
-  let Item=ProductItems;
-  function handleTopRatedProducts() {
-    Item = ProductItems.filter((product) => product.rating.rate > 4);
-    console.log(Item);
+  const[filteredItems,setfilteredItems]=useState(PRODUCT_ITEMS);
+  function handleRatingFilter(minRate,maxRate){
+    setfilteredItems(
+      PRODUCT_ITEMS.filter(
+      (product) =>
+      product.rating.rate >= minRate && product.rating.rate <maxRate));
+}
+  function AllProducts(){
+    setfilteredItems(PRODUCT_ITEMS);
   }
  
   return (
@@ -19,12 +26,58 @@ const Body = () => {
         />
         Search
       </div>
-      <button className='px-4 py-2 font-semibold text-white transition-colors duration-200 bg-blue-600 rounded-lg shadow-md w-60 hover:bg-blue-700 hover:shadow-lg' onClick={handleTopRatedProducts}>
-        Top Rated Products
+      <button className='px-4 py-2 font-semibold text-white transition-colors duration-200 bg-blue-600 rounded-lg shadow-md w-60 hover:bg-blue-700 hover:shadow-lg' onClick={AllProducts}>
+         All Products
       </button>
+
+      <div className='flex flex-wrap gap-2'>
+        <button
+          className='px-4 py-2 font-semibold text-white transition-colors duration-200 bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 hover:shadow-lg'
+          onClick={() => {
+            handleRatingFilter(0,1);
+          }}
+          >
+            Rating 0-1⭐
+          </button>
+
+          <button
+            className='px-4 py-2 font-semibold text-white transition-colors duration-200 bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 hover:shadow-lg'
+            onClick={() => {
+              handleRatingFilter(1,2);
+            }}
+          >
+            Rating 1-2⭐
+          </button>
+          <button
+            className='px-4 py-2 font-semibold text-white transition-colors duration-200 bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 hover:shadow-lg'
+            onClick={() => {
+              handleRatingFilter(2,3);
+            }}
+          >
+            Rating 2-3⭐
+            </button>
+          <button
+          className='px-4 py-2 font-semibold text-white transition-colors duration-200 bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 hover:shadow-lg'
+          onClick={() => {
+            handleRatingFilter(3,4);
+          }}
+          >
+            Rating 3-4⭐
+            </button>
+          <button 
+            className='px-4 py-2 font-semibold text-white transition-colors duration-200 bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 hover:shadow-lg'
+            onClick={() => {
+              handleRatingFilter(4,5);
+            }}
+          >
+            Rating 4-5⭐
+            </button>'
+      </div>
+      <Categories/>
       <div className='flex flex-wrap justify-center gap-4 product-items'>
+        <h2 className='w-full text-xl font-semibold text-gray-800 text-center mb-4'>Total Items: {filteredItems.length}</h2>
 {
-  Item.map((product)=>
+  filteredItems.map((product)=>
     <ProductCard productItems={product} key={product.id}/>
   )
 }
