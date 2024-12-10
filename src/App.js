@@ -12,8 +12,7 @@ function App() {
     <div>
       <Header />
       <Body />
-      <Categories />
-      <Footer />
+     <Footer />
   
       </div>
   );

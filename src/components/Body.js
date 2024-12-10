@@ -1,19 +1,51 @@
-import React , { useState} from 'react';
+import React , { useState,useEffect} from 'react';
 import ProductCard from './ProductCard';
 import { PRODUCT_ITEMS } from '../utils/mockData';
 import Categories from './Categories';
+import ShimmerCard from './ShimmerCard';
 // import Card from './Card';
 
 const Body = () => {
-  const[filteredItems,setfilteredItems]=useState(PRODUCT_ITEMS);
+  const[filteredItems,setfilteredItems]=useState([]);
+  const[allproducts,setAllProducts]=useState([]);
+  const [searchText,setSearchText]=useState('');
+  useEffect(()=>{
+    fetchApiProducts();
+  } , []);
+  
+  async function fetchApiProducts() {
+    const data =await fetch ('https://fakestoreapi.com/products');
+    const productsdata = await data.json();
+    setfilteredItems(productsdata);
+    setAllProducts(productsdata);
+  }
+
   function handleRatingFilter(minRate,maxRate){
     setfilteredItems(
-      PRODUCT_ITEMS.filter(
+      allproducts.filter(
       (product) =>
-      product.rating.rate >= minRate && product.rating.rate <maxRate));
+      product.rating.rate >= minRate && product.rating.rate < maxRate));
 }
-  function AllProducts(){
-    setfilteredItems(PRODUCT_ITEMS);
+  function handleResetFilter(){
+    setfilteredItems(allproducts);
+  }
+
+  function handleSearchFilter() {
+    const searchedProducts = allproducts.filter((product) =>
+      product.title.toLowerCase().includes(searchText.toLowerCase())
+  );
+  setfilteredItems(searchedProducts);
+  }
+  if(filteredItems.length === 0){
+    return(
+      <div className='flex flex-wrap justify-center gap-4 p-4'>
+        {Array(8)
+        .fill('')
+        .map((_, index) => (
+          <ShimmerCard key={index} />
+        ))}
+      </div>
+    )
   }
  
   return (
@@ -23,22 +55,30 @@ const Body = () => {
           type='text'
           className='w-80 px-4 py-2 pr-10 text-sm text-gray-700 bg-white border border-gray-800 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400'
           placeholder='Search...'
+          value={searchText}
+          onChange={(e)=>{
+            setSearchText(e.target.value);
+          }}
         />
-        Search
+        {/* Search */}
+        <button onClick={handleSearchFilter}>Search</button>
+        
+
       </div>
-      <button className='px-4 py-2 font-semibold text-white transition-colors duration-200 bg-blue-600 rounded-lg shadow-md w-60 hover:bg-blue-700 hover:shadow-lg' onClick={AllProducts}>
-         All Products
+      <button className='px-4 py-2 font-semibold text-white transition-colors duration-200 bg-blue-600 rounded-lg shadow-md w-60 hover:bg-blue-700 hover:shadow-lg' 
+      onClick={handleResetFilter}>
+        All Products
       </button>
 
       <div className='flex flex-wrap gap-2'>
-        <button
+        {/* <button
           className='px-4 py-2 font-semibold text-white transition-colors duration-200 bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 hover:shadow-lg'
           onClick={() => {
             handleRatingFilter(0,1);
           }}
           >
             Rating 0-1⭐
-          </button>
+          </button> */}
 
           <button
             className='px-4 py-2 font-semibold text-white transition-colors duration-200 bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 hover:shadow-lg'
